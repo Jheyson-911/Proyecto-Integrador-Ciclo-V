@@ -16,26 +16,36 @@ const getAllEmpresas = async (req, res) => {
 
 const createEmpresa = async (req, res) => {
     try {
-        const {nombre, img, ruc , descripcion, mision, vision ,areasTrabajo, requisitos, sector} = req.body;
-            if(!nombre || !img || !ruc || !descripcion || !mision || !vision || !areasTrabajo || !requisitos || !sector){
+        const {
+            empresa_img,
+            empresa_nom,
+            empresa_ruc ,
+            empresa_descrip,
+            empresa_mision,
+            empresa_vision,
+            empresa_areas_trab,
+            empresa_requisitos,
+            sector_id_fk
+        } = req.body;
+            if(!empresa_img || !empresa_nom || !empresa_ruc || !empresa_descrip || !empresa_mision || !empresa_vision || !empresa_areas_trab || !empresa_requisitos || !sector_id_fk){
                 res.status(400).json({
                     message: 'Faltan datos'
                 });
             }
 
             const empresas = {
-                nombre,
-                img,
-                ruc,
-                descripcion,
-                mision,
-                vision,
-                areasTrabajo,
-                requisitos,
-                sector
+                empresa_img,
+                empresa_nom,
+                empresa_ruc,
+                empresa_descrip,
+                empresa_mision,
+                empresa_vision,
+                empresa_areas_trab,
+                empresa_requisitos,
+                sector_id_fk
             }
             const connection = await getConnection();
-            const result = await connection.query('INSERT INTO tbl_empresa SET ?', [empresas]);
+            const result = await connection.query('INSERT INTO tbl_empresa SET ?', empresas);
             res.json({
                 message: 'Empresa agregada correctamente'
             });
@@ -66,24 +76,34 @@ const getEmpresa = async (req, res) => {
 const updateEmpresa = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, img, ruc , descripcion, mision, vision ,areasTrabajo, requisitos, sector } = req.body;
-        const empresas = {
-            nombre,
-            img,
-            ruc,
-            descripcion,
-            mision,
-            vision,
-            areasTrabajo,
-            requisitos,
-            sector
-        }
+        const {
+            empresa_img,
+            empresa_nom,
+            empresa_ruc ,
+            empresa_descrip,
+            empresa_mision,
+            empresa_vision,
+            empresa_areas_trab,
+            empresa_requisitos,
+            sector_id_fk
+        } = req.body;
+            if(!empresa_img || !empresa_nom || !empresa_ruc || !empresa_descrip || !empresa_mision || !empresa_vision || !empresa_areas_trab || !empresa_requisitos || !sector_id_fk){
+                res.status(400).json({
+                    message: 'Faltan datos'
+                });
+            }
 
-        if(!id || !nombre || !img || !ruc || !descripcion || !mision || !vision || !areasTrabajo || !requisitos || !sector){
-            res.status(400).json({
-                message: 'Faltan datos'
-            });
-        }
+            const empresas = {
+                empresa_img,
+                empresa_nom,
+                empresa_ruc,
+                empresa_descrip,
+                empresa_mision,
+                empresa_vision,
+                empresa_areas_trab,
+                empresa_requisitos,
+                sector_id_fk
+            }
         const  connection = await getConnection();
         const result = await connection.query('UPDATE tbl_empresa SET ? WHERE empresa_id = ?', [ empresas, id]);
         res.json({

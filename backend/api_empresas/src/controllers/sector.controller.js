@@ -3,7 +3,7 @@ import {getConnection} from '../databases/databases';
 const getAllSectores = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query('SELECT * FROM tbl_sectores');
+        const result = await connection.query('SELECT * FROM tbl_sectore');
         res.json(result);
     }
     catch (error) {
@@ -16,10 +16,19 @@ const getAllSectores = async (req, res) => {
 
 const createSector = async (req, res) => {
     try {
-        const {  nombre } = req.body;
-
+        const {  sector_nom } = req.body;
+        console.log(req.body);
+        if(!sector_nom){
+            res.status(400).json({
+                message: 'Faltan datos'
+            });
+        }
+        const sector = {
+            sector_nom
+        }
+        
         const connection = await getConnection();
-        const result = await connection.query('INSERT INTO tbl_sectores SET ?', [nombre]);
+        const result = await connection.query('INSERT INTO tbl_sectore SET ?', sector);
         res.json({
             message: 'Sector agregado correctamente'
         });
@@ -36,7 +45,7 @@ const getSector = async (req, res) => {
     try {
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query('SELECT * FROM tbl_sectores WHERE sector_id = ?', [id]);
+        const result = await connection.query('SELECT * FROM tbl_sectore WHERE sector_id = ?', [id]);
         res.json(result);
     }
     catch (error) {
@@ -50,16 +59,19 @@ const getSector = async (req, res) => {
 const updateSector = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre } = req.body;
+        const { sector_nom } = req.body;
 
-        if(!id || !nombre){
+        if(!id || !sector_nom){
             res.status(400).json({
                 message: 'Faltan datos'
             });
         }
+        const sector = {
+            sector_nom
+        }
 
         const connection = await getConnection();
-        const result = await connection.query('UPDATE tbl_sectores SET ? WHERE sector_id = ?', [sector, id]);
+        const result = await connection.query('UPDATE tbl_sectore SET ? WHERE sector_id = ?', [sector, id]);
         res.json({
             message: 'Sector actualizado correctamente'
         });
@@ -76,7 +88,7 @@ const deleteSector = async (req, res) => {
     try {
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query('DELETE FROM tbl_sectores WHERE sector_id = ?', [id]);
+        const result = await connection.query('DELETE FROM tbl_sectore WHERE sector_id = ?', [id]);
         res.json({
             message: 'Sector eliminado correctamente'
         });
